@@ -1,7 +1,10 @@
-# Environment variables
+# Environment variables (but keep .env.example files for templates)
 .env
 .env.local
 .env.*.local
+!.env.example
+!server/.env.example
+!client/.env.example
 
 # Dependencies
 node_modules/
