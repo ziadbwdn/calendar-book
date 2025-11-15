@@ -11,13 +11,13 @@ COPY client/package*.json ./
 # Install dependencies
 RUN npm install
 
-# Copy source code (from client directory)
-COPY client/ .
-
 # Build the application with environment variables
 # Railway automatically passes environment variables as build args
 ARG VITE_API_BASE_URL
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+
+# Copy source code (from client directory)
+COPY client/ .
 
 # Build TypeScript and Vite project
 RUN npm run build
