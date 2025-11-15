@@ -145,7 +145,6 @@ async function fetchAndRenderSettings(container: HTMLElement): Promise<void> {
     if (!settings) {
       settings = {
         id: '',
-        userId: '',
         timezone: 'America/New_York',
         workingHours: [
           { day: 1, start: '09:00', end: '17:00' },
@@ -159,8 +158,8 @@ async function fetchAndRenderSettings(container: HTMLElement): Promise<void> {
         bufferAfter: 0,
         minimumNotice: 24,
         blackoutDates: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
     }
 
