@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:3000/api}
+    container_name: calendar-booking-client
+    ports:
+      - "5173:80"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+    networks:
+      - calendar-network
+
+networks:
+  calendar-network:
+    driver: bridge
