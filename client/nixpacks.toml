@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["nodejs_18", "nginx"]
+nixPkgs = ["nodejs_18"]
 
 [phases.install]
 cmds = ["npm ci"]
@@ -9,6 +9,3 @@ cmds = ["npm run build"]
 
 [start]
 cmd = "npm start"
-
-[variables]
-NIXPACKS_NO_MUSL = "1"
