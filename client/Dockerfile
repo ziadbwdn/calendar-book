@@ -5,14 +5,14 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy package files (from client directory when build context is root)
+COPY client/package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy source code
-COPY . .
+# Copy source code (from client directory)
+COPY client/ .
 
 # Build the application with environment variables
 # Railway automatically passes environment variables as build args
@@ -25,8 +25,8 @@ RUN npm run build
 # Stage 2: Production with Nginx
 FROM nginx:alpine
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+# Copy nginx configuration (from client directory)
+COPY client/nginx.conf /etc/nginx/nginx.conf
 
 # Copy built files from builder
 COPY --from=builder /app/dist /usr/share/nginx/html

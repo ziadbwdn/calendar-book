@@ -5,14 +5,14 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy package files (from server directory when build context is root)
+COPY server/package*.json ./
 
 # Install ALL dependencies (including dev for build)
 RUN npm install && npm cache clean --force
 
-# Copy source code
-COPY . .
+# Copy source code (from server directory)
+COPY server/ .
 
 # Build TypeScript
 RUN npm run build
