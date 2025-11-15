@@ -7,11 +7,22 @@ const options = {
       title: 'Calendar Booking System API',
       version: '1.0.0',
       description: 'API for managing organizer schedules and booking appointments',
+      contact: {
+        name: 'API Support',
+        url: 'https://github.com',
+      },
+      license: {
+        name: 'MIT',
+      },
     },
     servers: [
       {
         url: 'http://localhost:3000/api',
         description: 'Development server',
+      },
+      {
+        url: 'https://calendar-book-production.up.railway.app/api',
+        description: 'Production server',
       },
     ],
     components: {
@@ -91,4 +102,43 @@ const options = {
   apis: ['./src/routes/*.ts'],
 };
 
-export const swaggerSpec = swaggerJsdoc(options);
+// Add manual paths for non-route endpoints
+const baseSpec = swaggerJsdoc(options) as any;
+const swaggerSpecWithPaths: any = {
+  ...baseSpec,
+  paths: {
+    ...(baseSpec?.paths || {}),
+    '/health': {
+      get: {
+        summary: 'Health check endpoint',
+        tags: ['System'],
+        description: 'Returns the health status of the API server',
+        responses: {
+          200: {
+            description: 'Server is healthy',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    status: {
+                      type: 'string',
+                      example: 'ok',
+                    },
+                    timestamp: {
+                      type: 'string',
+                      format: 'date-time',
+                      description: 'ISO 8601 timestamp of health check',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+};
+
+export const swaggerSpec = swaggerSpecWithPaths;
