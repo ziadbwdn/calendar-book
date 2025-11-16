@@ -1,6 +1,16 @@
 // API Base URL - from environment variable or fallback to localhost for development
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
 
+// Debug: Log API configuration on app start
+if (typeof window !== 'undefined') {
+  console.log('%c[API Configuration]', 'color: #0066cc; font-weight: bold', {
+    'VITE_API_BASE_URL env': import.meta.env.VITE_API_BASE_URL || '(not set)',
+    'Resolved API_BASE_URL': API_BASE_URL,
+    'Environment': import.meta.env.MODE,
+    'Build time': new Date().toISOString(),
+  });
+}
+
 export const ENDPOINTS = {
   // Auth
   AUTH_REGISTER: '/auth/register',

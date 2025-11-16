@@ -126,6 +126,8 @@ export class ApiClient {
       url += `?${queryString}`;
     }
 
+    console.log(`[API GET] ${url}`);
+
     try {
       const response = await fetch(url, {
         method: 'GET',
@@ -150,6 +152,8 @@ export class ApiClient {
     includeAuth = true
   ): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
+
+    console.log(`[API POST] ${url}`, data);
 
     try {
       const response = await fetch(url, {
