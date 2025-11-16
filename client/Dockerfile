@@ -12,8 +12,8 @@ COPY client/package*.json ./
 RUN npm install
 
 # Build the application with environment variables
-# Railway automatically passes environment variables as build args
-ARG VITE_API_BASE_URL
+# Railway passes environment variables as build args via railway.json
+ARG VITE_API_BASE_URL=https://calendar-book-production.up.railway.app/api
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 # Copy source code (from client directory)
@@ -31,7 +31,7 @@ COPY client/nginx.conf /etc/nginx/nginx.conf
 # Copy built files from builder
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Expose port (Railway uses $PORT environment variable)
+# Expose port 80 (Railway will dynamically map to $PORT)
 EXPOSE 80
 
 # Health check
