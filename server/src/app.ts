@@ -11,12 +11,19 @@ export const createApp = () => {
   const app = express();
 
   // CORS configuration with environment-based origins
-  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(origin => origin.trim()) || [];
+  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(origin => origin.trim()).filter(Boolean) || [];
+
   app.use(cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl)
+      // Allow requests with no origin (like mobile apps or curl requests)
       if (!origin) return callback(null, true);
 
+      // In development with no ALLOWED_ORIGINS set, allow all origins
+      if (process.env.NODE_ENV !== 'production' && allowedOrigins.length === 0) {
+        return callback(null, true);
+      }
+
+      // In production, check against whitelist
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
