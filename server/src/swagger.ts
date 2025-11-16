@@ -312,7 +312,12 @@ const options = {
     },
     security: [{ bearerAuth: [] }],
   },
-  apis: ['./src/routes/*.ts'],
+  apis: [
+    // In development: TypeScript source files
+    './src/routes/*.ts',
+    // In production: Compiled JavaScript files
+    './dist/routes/*.js',
+  ],
 };
 
 // Add manual paths for non-route endpoints
