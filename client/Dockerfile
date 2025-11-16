@@ -13,11 +13,14 @@ RUN npm install
 
 # Build the application with environment variables
 # Railway passes environment variables as build args via railway.json
-ARG VITE_API_BASE_URL=https://calendar-book-production.up.railway.app/api
-ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+ARG VITE_API_BASE_URL
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL:-https://calendar-book-production.up.railway.app/api}
 
 # Copy source code (from client directory)
 COPY client/ .
+
+# Debug: Print the build variable to verify it was passed
+RUN echo "Building client with VITE_API_BASE_URL=${VITE_API_BASE_URL}"
 
 # Build TypeScript and Vite project
 RUN npm run build
