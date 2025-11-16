@@ -3,7 +3,10 @@
   "build": {
     "builder": "DOCKERFILE",
     "dockerfilePath": "client/Dockerfile",
-    "context": "."
+    "context": ".",
+    "args": {
+      "VITE_API_BASE_URL": "$VITE_API_BASE_URL"
+    }
   },
   "deploy": {
     "numReplicas": 1,
