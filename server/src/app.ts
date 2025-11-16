@@ -11,27 +11,21 @@ export const createApp = () => {
   const app = express();
 
   // CORS configuration with environment-based origins
-  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(origin => origin.trim()).filter(Boolean) || [];
+  const allowedOriginsList = process.env.ALLOWED_ORIGINS?.split(',').map(origin => origin.trim()).filter(Boolean) || [];
 
-  app.use(cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-
-      // In development with no ALLOWED_ORIGINS set, allow all origins
-      if (process.env.NODE_ENV !== 'production' && allowedOrigins.length === 0) {
-        return callback(null, true);
+  // If no allowed origins specified, allow all origins (useful for development)
+  // If allowed origins are specified, only allow those origins
+  const corsOptions = allowedOriginsList.length > 0
+    ? {
+        origin: allowedOriginsList,
+        credentials: true
       }
+    : {
+        origin: true, // Allow all origins
+        credentials: true
+      };
 
-      // In production, check against whitelist
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true
-  }));
+  app.use(cors(corsOptions));
   app.use(express.json());
 
   // Health check endpoint (for Docker/Railway)
